@@ -12,8 +12,13 @@ private:
 public:
 	Circular();
 	~Circular();
-	void AddNode(int data);
 
+	void  InsertFirstNode(int data);
+	void  AddNodeAtEnd(int data);
+	void  AddAtBeginig(int data);
+	void AddBetween(int data, node* Temp);
+	void  AddNode(int data);
+	void  PrintList();
 };
 
 #endif
