@@ -12,13 +12,11 @@ private:
 public:
 	Circular();
 	~Circular();
-
-	void  InsertFirstNode(int data);
-	void  AddNodeAtEnd(int data);
-	void  AddAtBeginig(int data);
-	void AddBetween(int data, node* Temp);
-	void  AddNode(int data);
-	void  PrintList();
+	void PrintList();
+	void DeleteNode(int data);
+	void AddNode(int data);
+	void StoreListToFIle();
+	void RetrieveListFromFile();
 };
 
 #endif

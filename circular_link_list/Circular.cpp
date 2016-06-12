@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <fstream>
 #include "Circular.h"
 
 using namespace std;
@@ -25,83 +25,6 @@ Circular::~Circular() {
 	}
 }
 
-//Insert first node into an empty circular list.
-void  Circular::InsertFirstNode(int data) {
-	node* newnode = new node();
-	newnode->data = data;
-
-	newnode->next = newnode; 
-	Tail = newnode;
-}
-
-//Add a node at the end of a non empty in ascending order circular list.
-void  Circular::AddNodeAtEnd(int data) {
-	node* newnode = new node();
-	newnode->data = data;
-
-	newnode->next = Tail->next;
-	Tail->next = newnode;
-	Tail = newnode;
-}
-
-//Add a node at the begining of a non empty in ascending order circular list.
-void  Circular::AddAtBeginig(int data) {
-	node* newnode = new node();
-	newnode->data = data;
-
-	newnode->next = Tail->next; 
-	Tail->next = newnode;
-}
-
-//Add a node between two nodes in a non empty in ascending order circular list.
-void  Circular::AddBetween(int data, node* Temp) {
-	node* newnode=new node();
-	newnode->data = data;
-
-	newnode->next = Temp->next; 
-	Temp->next = newnode;
-}
-
-//Add node in an ascending ordered circular list.
-void  Circular::AddNode(int data) {
-	node* Curr=Tail;
-	node* Prev=Tail;
-	bool Added = false;
-
-	if (Tail != NULL) {
-		if (data > Tail->data) {
-			Added = true;
-			AddNodeAtEnd(data);
-		}
-		else if (data < Tail->next->data) {
-			Added = true;
-			AddAtBeginig(data);
-		}
-		else {
-			Curr = Tail->next;
-			while (Curr != Tail && data > Curr->data) {
-				Prev = Curr;
-				Curr = Curr->next;
-			}
-			if (data != Curr->data) {
-				AddBetween(data, Prev);
-				Added = true;
-			}
-		}
-	}
-	else {
-		Added = true;
-		InsertFirstNode(data); //Insert first node into an empty circular list.
-	}
-
-	if (Added == false) {
-		cout << "The item exists\n";
-	}
-	else {
-		cout << "The item successfully inserted\n";
-	}
-}
-
 //Prints the ascending ordered circular link list.
 void  Circular::PrintList() {
 	node* Temp;
@@ -120,7 +43,107 @@ void  Circular::PrintList() {
 		}
 	}
  else {
-	 cout << "The list is empty\n";
+	 cout << "The circular list is empty\n";
 	}
+}
 
+//Delete a node from the ascending ordered circular link list.
+void  Circular::DeleteNode(int data) {
+	node* Curr;
+	node* Prev;
+
+	if (Tail != NULL) {
+		if (Tail->next == Tail && Tail->data == data) {
+			delete(Tail);
+			Tail = NULL;
+			cout << "The item successfully deleted\n";
+		}
+		else {
+			Curr = Tail->next;
+			Prev = Tail;
+			while (Curr != Tail && Curr->data !=data) {
+				Prev = Curr;
+				Curr = Curr->next;
+			}
+			if (Curr->data == data) {
+				Prev->next = Curr->next;
+				if (Curr == Tail) {
+					Tail = Prev;
+				}
+				delete(Curr);
+				cout << "The item successfully deleted\n";
+			}
+		}
+	}
+	else {
+		cout << "The circular list is empty\n";
+	}
+}
+
+//Add node in an ascending ordered circular list.
+void  Circular::AddNode(int data) {
+	node* newnode = new node();
+	node* Curr;
+	node* Prev;
+
+	newnode->data = data;
+	if (Tail == NULL) { //Insert the first node in the circular list.
+		newnode->next = newnode;
+		Tail = newnode;
+		cout << "The item successfully inserted\n";
+	}
+	else {
+		Curr = Tail->next;
+		Prev = Tail;
+		while (Curr != Tail && data > Curr->data) { //Search for the proper location in the circular list to add the node.
+			Prev = Curr;
+			Curr = Curr->next;
+		}
+		if (Curr->data != data) { //Check for the existance of the new node in the circular link list.
+			if (Curr == Tail && data > Curr->data) { //Insert the node at the end of the circular list.
+				newnode->next = Tail->next;
+				Tail->next = newnode;
+				Tail = newnode;
+			}
+			else {
+				newnode->next = Curr; //Insert the node anywhere else in the circular list.
+				Prev->next = newnode;
+			}
+			cout << "The item successfully inserted\n";
+		}
+		else { //Do not insert the new node if it already exists in the circular list.
+			cout << "The item exists\n";
+			delete(newnode);
+		}
+	}
+}
+
+//Store the circular list to a file.
+void Circular::StoreListToFIle() {
+	ofstream newfile("Circular.txt");
+	node* Temp=Tail;
+
+	if (Temp !=NULL) {
+		Temp = Tail->next;
+		while (Temp != Tail) {
+			newfile << Temp->data << endl;
+			Temp = Temp->next;
+		}
+		newfile << Temp->data;
+	}
+	newfile.close();
+}
+
+//Retrieve list from file.
+void Circular::RetrieveListFromFile() {
+	ifstream newfile("Circular.txt");
+	int data;
+
+	if (newfile.is_open()) {
+		while (!newfile.eof()) {
+			newfile >> data;
+			AddNode(data);
+		}
+	}
+	newfile.close();
 }

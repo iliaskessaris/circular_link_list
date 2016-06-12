@@ -1,5 +1,6 @@
-In this project we define the functions such as AddNode, DeleteNode, PrintList
-to manipulate the nodes of a circular link list, through a user interface.
-Each node of the circular link list contains two parts: one with 
-the data, an integer in our case, and another with a pointer to 
-the next node. 
+In this project we define the functions AddNode(), DeleteNode() and PrintList()
+to manipulate the nodes of a circular link list in ascending order, through a user interface.
+Each node of the circular link list contains two parts: one with the data, an integer in our 
+case, and another with a pointer to the next node. At the end of the execution the numbers
+of the list are stored in a file named "Circular.txt" and at the begining read from that file
+if it ixists.
